@@ -15,10 +15,41 @@ const handsUp = [
     '  |',
     ' / \\'
     ]
-    ];
+];
 
-executeAnimation(handsUp,{
+const squat = [
+    [
+        '  o',
+        ' /|\\',
+        '/ | \\',
+        ' / \\',
+        '/   \\'
+    ],
+    [
+        '',
+        '',
+        '  o', 
+        '\'-|-\'',
+        '/\\|/\\'
+    ],
+    [
+        '  o',
+        ' /|\\',
+        '/ | \\',
+        ' / \\',
+        '/   \\'
+    ]
+]
+/**
+ 
+  o 
+'-|-'
+/\|/\
+ 
+ */
+
+executeAnimation(squat,{
     duration: 2,
-    repeats: 2,
+    repeats: 10,
     fps: 16
 })

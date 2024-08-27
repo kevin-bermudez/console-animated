@@ -29,7 +29,7 @@ const adjustAnimationToFps = (animation,{
             }
         })
     }
-
+    console.log(animationFrames.length)
     return animationFrames;
 }
 
@@ -76,9 +76,10 @@ const executeAnimation = (animation,{
         // console.log('frame:',currentFrame);
         // console.log((currentFrame * control) - 1);
         // console.log('new',currentFrame)
+
         print(adjustedAnimation[currentFrame - 1]);
         // console.log('seconds',secondsCounter);
-        if(secondsCounter >=duration){
+        if(secondsCounter >=duration || !adjustedAnimation[currentFrame]){
             const initialDate = new Date();
             initialTime = initialDate.getTime();
             currentFrame = 1;
