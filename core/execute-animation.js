@@ -1,11 +1,20 @@
 const cursor = require('../ansi/ansi')(process.stdout)
 
-const print = (element) => {
+const print = (element,context,transformers) => {
     console.clear();
     element.forEach(line => {
-        console.log(line);
+        let defLine = line;
+        
+        if(transformers && transformers.length){
+            transformers.forEach(transformer => {
+                defLine = transformer(line,context);
+            })
+        }
+        console.log(defLine);
     });
 }
+
+module.exports.print = print;
 
 const adjustAnimationToFps = (animation,{
     durationInSeconds,
@@ -47,10 +56,14 @@ const executeAnimation = (animation,{
     let secondsCounter = 0;
     let repeatsCounter = 1;
 
-    const adjustedAnimation = adjustAnimationToFps(animation,{
+    const adjustedAnimation = adjustAnimationToFps(animation.frames,{
         durationInSeconds: duration,
         fps
     })
+
+    const context = {
+        repeatsCounter
+    }
 
     while(repeatsCounter <= repeats){
         const currentDate = new Date();
@@ -77,7 +90,7 @@ const executeAnimation = (animation,{
         // console.log((currentFrame * control) - 1);
         // console.log('new',currentFrame)
 
-        print(adjustedAnimation[currentFrame - 1]);
+        print(adjustedAnimation[currentFrame - 1],context,animation.transformers);
         // console.log('seconds',secondsCounter);
         if(secondsCounter >=duration || !adjustedAnimation[currentFrame]){
             const initialDate = new Date();
@@ -85,6 +98,7 @@ const executeAnimation = (animation,{
             currentFrame = 1;
             secondsCounter = 0;
             repeatsCounter++;
+            context.repeatsCounter = repeatsCounter;
         }
     }
 }

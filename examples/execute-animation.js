@@ -1,4 +1,4 @@
-const { executeAnimation } = require("../core/execute-animation");
+const { executeAnimation, print } = require("../core/execute-animation");
 
 const handsUp = [
     [
@@ -40,16 +40,51 @@ const squat = [
         '/   \\'
     ]
 ]
+
+const walkRight = {
+    frames : [
+        [
+            '  o',
+            ' /|\\',
+            '/ | \\',
+            ' / \\',
+            '/_  \\_'
+        ],
+        [
+            '  o',
+            ' /|\\/',
+            '/ |_',
+            ' /  \\_',
+            '/_'
+        ],
+        [
+            '    o',
+            '   /|\\/',
+            '  | |',
+            ' \\_/ \\',
+            '      \\_'
+        ]
+    ],
+    transformers : [
+        (line,context) => {
+            return ' '.repeat(context.repeatsCounter) + line;
+        }
+    ]
+}
+  
 /**
  
-  o 
-'-|-'
-/\|/\
+   o
+  /|\/
+ | | 
+ _/ \
+'    \_
  
  */
 
-executeAnimation(squat,{
-    duration: 2,
+executeAnimation(walkRight,{
+    duration: 1,
     repeats: 10,
     fps: 16
 })
+// print(walkRight.frames[2])
