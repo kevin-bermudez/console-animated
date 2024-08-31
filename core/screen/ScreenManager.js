@@ -27,7 +27,7 @@ class ScreenManager{
     
     const {x:realOriginX,y:realOriginY} = this.getRealCoordinates(from); 
     const {x:endX,y:endY} = this.getRealCoordinates(to); 
-
+    
     let spaceIsEmpty = true;
     for(let indexy = realOriginY; indexy <= endY; indexy++){
       for(let indexx = realOriginX; indexx <= endX; indexx++){
@@ -49,12 +49,35 @@ class ScreenManager{
     }
   }
 
-  removeObject(object,origin,index,print = false){
-    const realOrigin = this.getRealCoordinates(origin);
+  getBorderObject(object){
+    return{
+      x1 : object.positionInScreen.x - 1,
+      y1 : object.positionInScreen.y - 1,
+      x2 : object.positionInScreen.x + object.size.x + 1,
+      y2 : object.positionInScreen.y + object.size.y + 1
+    }
+  }
+
+  objectsNear(referenceObject){
+    const referenceObjectBorders = this.getBorderObject(referenceObject);
+    return this.objectsInScreen.filter(obIS => {
+      return ![
+        obIS.positionInScreen.x >= referenceObjectBorders.x1,
+        obIS.positionInScreen.y >= referenceObjectBorders.y1,
+        obIS.positionInScreen.x + obIS.size.x <= referenceObjectBorders.x2,
+        obIS.positionInScreen.y + obIS.size.y <= referenceObjectBorders.y2
+        && obIS.id !== referenceObject.id
+      ].includes(false)
+    })
+  }
+
+  removeObject(object){
+    const {index} = this.getObjectInScreen(object.id);
+    const realOrigin = this.getRealCoordinates(object.positionInScreen);
     
     const toCoordinates = {
-      x : origin.x + object.size.x - 1,
-      y : origin.y + object.size.y - 1
+      x : object.positionInScreen.x + object.size.x - 1,
+      y : object.positionInScreen.y + object.size.y - 1
     }
     const realSize = this.getRealCoordinates(toCoordinates);
 
@@ -67,10 +90,6 @@ class ScreenManager{
     for(let indexy = realOrigin.y; indexy <= realSize.y; indexy++){
       for(let indexx = realOrigin.x; indexx <= realSize.x; indexx++){
         this.screen[indexy - 1][indexx - 1] = ' ';
-        if(print){
-          process.stdout.cursorTo(indexx - 1,indexy - 1);
-          process.stdout.write(' ');
-        }
       }
     }
   } 
@@ -82,7 +101,7 @@ class ScreenManager{
     }
   }
 
-  drawObject(object,origin,print=false){
+  drawObject(object,origin){
     const realOrigin = this.getRealCoordinates(origin);
     
     const toCoordinates = this.getFinalPosition(object,origin);
@@ -105,12 +124,11 @@ class ScreenManager{
 
     for(let indexy = realOrigin.y; indexy <= realSize.y; indexy++){
       indexXInObject = 0;
+      
       for(let indexx = realOrigin.x; indexx <= realSize.x; indexx++){
+        
         this.screen[indexy - 1][indexx - 1] = object.lines[indexYInObject][indexXInObject];
-        if(print){
-          process.stdout.cursorTo(indexx - 1,indexy - 1);
-          process.stdout.write(object.lines[indexYInObject][indexXInObject]);
-        }
+
         indexXInObject++;
       }
 
@@ -130,6 +148,50 @@ class ScreenManager{
       index : indexObject,
       object
     }
+  }
+
+  getObject(object){
+    return this.objectsInScreen.find(objectInt => objectInt.id === object.id);
+  }
+
+  getObjectInScreen(objectId){
+    const index = this.objectsInScreen.findIndex(objectInt => objectInt.id === objectId);
+
+    return{
+      object : this.objectsInScreen[index],
+      index
+    }
+  }
+
+  moveObject(object,direction,distance = 1){
+    const directionDef = direction.toUpperCase();
+    
+    const nextPosition = {...object.positionInScreen};
+
+    if(directionDef === this.movementDirections.RIGHT){
+      nextPosition.x += distance;
+    }
+
+    if(directionDef === this.movementDirections.LEFT){
+      nextPosition.x -= distance;
+    }
+
+    if(directionDef === this.movementDirections.UP){
+      nextPosition.y -= distance;
+    }
+
+    if(directionDef === this.movementDirections.DOWN){
+      nextPosition.y += distance;
+    }
+    // console.log('info',object,directionDef,nextPosition,distance)
+    const spaceIsEmpty = this.spaceIsEmpty(nextPosition,this.getFinalPosition(object,nextPosition));
+
+    if(!spaceIsEmpty){
+      return ;
+    }
+
+    this.removeObject(object);
+    this.drawObject(object,nextPosition,false);
   }
 
   moveFocusObject(direction,distance = 1){

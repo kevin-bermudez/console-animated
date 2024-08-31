@@ -1,3 +1,5 @@
+const { v4:uuidv4 } = require('uuid');
+
 class GenericObject{
   lines = [];
   size = { x:0,y:0 }
@@ -6,8 +8,12 @@ class GenericObject{
   config = {
     name : ''
   }
+  id = null;
+
+  onUpdate = () => {}
 
   constructor(config = {}){
+    this.id = uuidv4();
     this.config = config;
   }
 
@@ -18,6 +24,11 @@ class GenericObject{
     if(content.length > this.size.x){
       this.size.x = content.length;
     }
+  }
+
+  resetGraphics(){
+    this.lines = [];
+    this.size = { x:0,y:0 };
   }
 }
 

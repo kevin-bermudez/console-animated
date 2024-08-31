@@ -12,8 +12,11 @@ class KeyListeners{
         if(key.name === 'c'){
           process.exit();
         }
-        // screenManager.moveFocusObject(key.name);
-        console.log('hey hey hey',key);
+
+        const keyListeners = KeyListeners.getInstance();
+        keyListeners.listeners.forEach((listener) => {
+          listener(key);
+        })
       });
 
       KeyListeners.instance = new KeyListeners();

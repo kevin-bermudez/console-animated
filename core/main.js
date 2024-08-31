@@ -1,4 +1,5 @@
 const { KeyListeners } = require('./listeners/KeyListeners');
+const { UpdateListeners } = require('./listeners/UpdateListeners');
 const { createBorder } = require('./screen/create-border');
 const { ScreenManager } = require('./screen/ScreenManager');
 const cursor = require('../ansi/ansi')(process.stdout)
@@ -20,11 +21,18 @@ const loop = (time) => {
     return;
   }
 
+  const updateListeners = UpdateListeners.getInstance();
+  updateListeners.emitUpdate();
+
   const screenManager = ScreenManager.getInstance();
 
   configGame.lastChange = time;
   configGame.currentFrame++;
 
+  // console.log(screenManager.screen)
+  const fs = require('fs');
+  fs.writeFileSync('pruebascreen.json',JSON.stringify(screenManager.screen,null,2))
+  // console.log('screen',screenManager.screen)
   screenManager.printScreen();
 
   requestAnimationFrame(loop);
@@ -38,17 +46,18 @@ const main = (configGameP = {
   fps : 60,
   currentFrame : 1
 }) => {
-  let configGame = {
+  configGame = {
     ...configGameP,
-    durationFrame : 1000 / configGameP.fps
+    durationFrame : 1000 / configGameP.fps,
+    lastChange : null
   };
 
   cursor.hide();
   KeyListeners.getInstance();
-  const screenManager = ScreenManager.getInstance();
-
-  screenManager.screen = [...createBorder()];
   
+  const screenManager = ScreenManager.getInstance();
+  screenManager.screen = [...createBorder()];
+
   requestAnimationFrame(loop);
 
 
