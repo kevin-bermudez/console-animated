@@ -101,19 +101,20 @@ class ScreenManager{
     }
   }
 
-  drawObject(object,origin){
-    const realOrigin = this.getRealCoordinates(origin);
+  drawObject(object,originP){
+    const originInitial = originP || object.originalPosition;
+    const realOrigin = this.getRealCoordinates(originInitial);
     
-    const toCoordinates = this.getFinalPosition(object,origin);
+    const toCoordinates = this.getFinalPosition(object,originInitial);
     const realSize = this.getRealCoordinates(toCoordinates);
 
-    const spaceIsEmpty = this.spaceIsEmpty(origin,toCoordinates)
+    const spaceIsEmpty = this.spaceIsEmpty(originInitial,toCoordinates)
 
     if(!spaceIsEmpty){
       return;
     }
 
-    object.positionInScreen = origin;
+    object.positionInScreen = originInitial;
 
     if(!object.inScreen){
       this.objectsInScreen.push(object);

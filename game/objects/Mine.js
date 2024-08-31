@@ -1,17 +1,17 @@
 const { EnterableObject } = require('../../core/objects/EnterableObject');
 
-class CentralBank extends EnterableObject{
+class Mine extends EnterableObject{
   constructor(config = {},x,y){
     super(config,{
       closeGraphic:  [
-        'x---------x',
-        '|B.Central|',
-        'x---------x'
+        'x-----------x',
+        '|Mina de oro|',
+        'x-----------x'
       ],
       openGraphic: [
-        'x---------x',
-        '|1 =entrar|',
-        'x---------x'
+        'x-----------x',
+        '|1 = entrar |',
+        'x-----------x'
       ],
       x,
       y
@@ -19,4 +19,4 @@ class CentralBank extends EnterableObject{
   }
 }
 
-module.exports.CentralBank = CentralBank;
+module.exports.Mine = Mine;
