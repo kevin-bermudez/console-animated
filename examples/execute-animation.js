@@ -50,6 +50,13 @@ const walkRight = {
             ' / \\',
             '/_  \\_'
         ],
+        // [
+        //     '     o', 
+        //     '   _/\\/',
+        //     ' / /',
+        //     ' _/\\',
+        //     '|   |_' 
+        // ],
         [
             '  o',
             ' /|\\/',
@@ -73,8 +80,12 @@ const walkRight = {
 }
   
 /**
- 
-   o
+     o 
+  _ /\/
+ / /
+ _/|
+   |_ 
+ o
   /|\/
  | | 
  _/ \
@@ -85,6 +96,6 @@ const walkRight = {
 executeAnimation(walkRight,{
     duration: 1,
     repeats: 10,
-    fps: 16
+    fps:100
 })
-// print(walkRight.frames[2])
+// print(walkRight.frames[1])
