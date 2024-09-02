@@ -1,7 +1,9 @@
+const { debugJson } = require("../../debugjson");
 const { getScreenSize } = require("../../utils/screen");
+const { createBorder } = require("./create-border");
 
 class ScreenManager{
-  screen = [];
+  screen = [...createBorder()];
   objectsInScreen = [];
   movementDirections = {
     UP : 'UP',
@@ -9,6 +11,7 @@ class ScreenManager{
     RIGHT : 'RIGHT',
     LEFT : 'LEFT'
   }
+  idtest = Date.now();
 
   static instance = null;
   static getInstance(){
@@ -20,7 +23,7 @@ class ScreenManager{
   }
 
   isDirKey(key){
-    return Object.values(this.movementDirections).includes(key.toUpperCase())
+    return !key.toUpperCase ? false : Object.values(this.movementDirections).includes(key.toUpperCase())
   }
 
   spaceIsEmpty(from,to){
@@ -84,7 +87,9 @@ class ScreenManager{
     object.positionInScreen = {x:0,y:0};
 
     if(object.inScreen){
-      delete this.objectsInScreen[index];
+      object.inScreen = false;
+      this.objectsInScreen.splice(index,1);
+      // delete this.objectsInScreen[index];
     }
 
     for(let indexy = realOrigin.y; indexy <= realSize.y; indexy++){
@@ -101,7 +106,14 @@ class ScreenManager{
     }
   }
 
+  resetScreen(){
+    this.screen = [...createBorder()];
+    this.objectsInScreen.forEach(object => object.onRemove ? object.onRemove() : null);
+    this.objectsInScreen = [];
+  }
+
   drawObject(object,originP){
+    // console.log('draw object');
     const originInitial = originP || object.originalPosition;
     const realOrigin = this.getRealCoordinates(originInitial);
     
@@ -115,26 +127,33 @@ class ScreenManager{
     }
 
     object.positionInScreen = originInitial;
-
+    
     if(!object.inScreen){
-      this.objectsInScreen.push(object);
+      const tmpObjects = [...this.objectsInScreen]
+      // console.log('push on objects')
+      tmpObjects.push(object);
+      this.objectsInScreen = [...tmpObjects];
     }
 
     let indexYInObject = 0;
     let indexXInObject = 0;
+
+    const tmpScreen = [...this.screen];
 
     for(let indexy = realOrigin.y; indexy <= realSize.y; indexy++){
       indexXInObject = 0;
       
       for(let indexx = realOrigin.x; indexx <= realSize.x; indexx++){
         
-        this.screen[indexy - 1][indexx - 1] = object.lines[indexYInObject][indexXInObject];
+        tmpScreen[indexy - 1][indexx - 1] = object.lines[indexYInObject][indexXInObject];
 
         indexXInObject++;
       }
 
       indexYInObject++;
     }
+
+    this.screen = tmpScreen;
   }  
 
   getFocusObject(){
@@ -152,7 +171,7 @@ class ScreenManager{
   }
 
   getObject(object){
-    return this.objectsInScreen.find(objectInt => objectInt.id === object.id);
+    return !this.objectsInScreen.length ? false : this.objectsInScreen.find(objectInt => objectInt.id === object.id);
   }
 
   getObjectInScreen(objectId){
@@ -224,25 +243,49 @@ class ScreenManager{
 
     this.removeObject(focusedObject,focusedObject.positionInScreen,indexFocusedObject,false);
     this.drawObject(focusedObject,nextPosition,false);
-    // this.printScreen();
   }
 
+  getScreen(){
+    return this.screen;
+  }
+  
   printScreen(){
     // process.stdout.clearLine(1);// <<--here
     // process.stdout.cursorTo(0,);
-
+    // console.log('print',this.objectsInScreen.length)
     const screenSize = getScreenSize();
-
+    const tmpScreen = this.getScreen();
+    let counter = 0;
+    // console.log('after screen',JSON.stringify(tmpScreen[3]))
     for(let y=1;y <= screenSize.rows;y++){
       let line = '';
+      let test = false;
       for(let x=1;x<=screenSize.columns;x++){
-        line += this.screen[y-1] && this.screen[y-1][x-1] ? this.screen[y-1][x-1] : ' ';
+        line += tmpScreen[y-1] && tmpScreen[y-1][x-1] ? tmpScreen[y-1][x-1] : ' ';
+        // if(tmpScreen[y-1] && tmpScreen[y-1][x-1] && tmpScreen[y-1][x-1].toLowerCase().includes('a')){
+        //   test = true;
+        // }
       }
 
+      // if(test){
+      //   console.log('Línea',y-1,line)
+      // }
+      // if(line.includes('B.Central')){
+      //   counter++;
+      // }
+
+      // if(y === 11){
+      //   line = 'Data: ' + screenSize.rows + ' ' + this.screen.length + ' ' + counter;
+      // }
+      
       process.stdout.cursorTo(0,y-1);
       process.stdout.write(line);
-    
+      
     }
+    
+    // console.log('cuantos bancos centrales tengo',this.idtest);
+    this.screen = tmpScreen;
+    // debugJson(tmpScreen,'prints'+Date.now())
   }
 }
 

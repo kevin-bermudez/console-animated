@@ -1,15 +1,12 @@
 const { main } = require("./core/main");
-
+const { ScenesManager } = require("./core/scenes/ScenesManager");
 const { ScreenManager } = require("./core/screen/ScreenManager");
-const { CentralBank } = require("./game/objects/CentralBank");
-const { Mine } = require("./game/objects/Mine");
-const { Person } = require("./game/objects/Person");
+const { InitialScene } = require("./game/scenes/InitialScene");
+const { InMine } = require("./game/scenes/InMine");
 
 main();
 
-const mine = new Mine({},1,1);
-new CentralBank({},1,mine.size.y+2);
-new Person({},mine.size.x+1,1);
+// const initialScene = new InitialScene();
+// initialScene.init();
 
-const screenManager = ScreenManager.getInstance();
-
+ScenesManager.getInstance().changeScene(InitialScene);

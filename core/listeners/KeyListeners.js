@@ -1,6 +1,8 @@
+const {v4 : uuidv4} = require('uuid');
+
 class KeyListeners{
   static instance = null;
-  listeners = [];
+  listeners = {};
 
   static getInstance(){
     if(!KeyListeners.instance){
@@ -14,7 +16,7 @@ class KeyListeners{
         }
 
         const keyListeners = KeyListeners.getInstance();
-        keyListeners.listeners.forEach((listener) => {
+        Object.values(keyListeners.listeners).forEach((listener) => {
           listener(key);
         })
       });
@@ -26,7 +28,13 @@ class KeyListeners{
   }
 
   registerListener(listener){
-    this.listeners.push(listener);
+    const newId = uuidv4();
+    this.listeners[newId] = listener;
+    return newId;
+  }
+
+  removeListener(listenerId){
+    delete this.listeners[listenerId];
   }
 }
 

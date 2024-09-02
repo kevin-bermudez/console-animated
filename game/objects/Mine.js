@@ -1,4 +1,5 @@
 const { EnterableObject } = require('../../core/objects/EnterableObject');
+const { InMine } = require('../scenes/InMine');
 
 class Mine extends EnterableObject{
   constructor(config = {},x,y){
@@ -14,8 +15,10 @@ class Mine extends EnterableObject{
         'x-----------x'
       ],
       x,
-      y
+      y,
+      asociateScene: InMine
     });
+    
   }
 }
 

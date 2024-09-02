@@ -4,7 +4,7 @@ const createBorder = () => {
   const screenSize = getScreenSize();
 
   const borderGraphics = [];
-
+  
   borderGraphics.push(['']);
   borderGraphics.push([
     '',

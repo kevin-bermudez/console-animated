@@ -1,3 +1,4 @@
+const { debugJson } = require('../debugjson');
 const { KeyListeners } = require('./listeners/KeyListeners');
 const { UpdateListeners } = require('./listeners/UpdateListeners');
 const { createBorder } = require('./screen/create-border');
@@ -30,9 +31,10 @@ const loop = (time) => {
   configGame.currentFrame++;
 
   // console.log(screenManager.screen)
-  const fs = require('fs');
-  fs.writeFileSync('pruebascreen.json',JSON.stringify(screenManager.screen,null,2))
+  // const fs = require('fs');
+  // fs.writeFileSync('pruebascreen.json',JSON.stringify(screenManager.screen,null,2))
   // console.log('screen',screenManager.screen)
+  
   screenManager.printScreen();
 
   requestAnimationFrame(loop);
@@ -43,7 +45,7 @@ const requestAnimationFrame = (f) => {
 }
 
 const main = (configGameP = {
-  fps : 60,
+  fps : 1,
   currentFrame : 1
 }) => {
   configGame = {
@@ -53,11 +55,15 @@ const main = (configGameP = {
   };
 
   cursor.hide();
-  KeyListeners.getInstance();
+  // KeyListeners.getInstance();
   
-  const screenManager = ScreenManager.getInstance();
-  screenManager.screen = [...createBorder()];
-
+  // const screenManager = ScreenManager.getInstance();
+  // screenManager.screen = [...createBorder()];
+  // screenManager.resetScreen();
+  // var lines = process.stdout.getWindowSize()[1];
+  // for(var i = 0; i < lines; i++) {
+  //     console.log('\r\n');
+  // }
   requestAnimationFrame(loop);
 
 
@@ -78,7 +84,6 @@ const main = (configGameP = {
   // person.setGraphic('o');
   // screenManager.drawObject(person,{x:12,y:2});
 
-  // screenManager.printScreen();
   // loop();
   // const fps = 1;
   // const initialDate = new Date();
@@ -110,7 +115,6 @@ const main = (configGameP = {
   //   waitForUserInput();
     
   //   lastChange = currentTime;
-  //   // screenManager.printScreen();
   // }
 }
 

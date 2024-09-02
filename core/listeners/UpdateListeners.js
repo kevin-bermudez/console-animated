@@ -1,13 +1,11 @@
+const {v4 : uuidv4} = require('uuid');
+
 class UpdateListeners{
   static instance = null;
-  listeners = [];
+  listeners = {};
 
   static getInstance(){
     if(!UpdateListeners.instance){
-      if (process.stdin.isTTY){
-        process.stdin.setRawMode(true);
-      }
-
       UpdateListeners.instance = new UpdateListeners();
     }
 
@@ -15,11 +13,17 @@ class UpdateListeners{
   }
 
   registerListener(listener){
-    this.listeners.push(listener);
+    const newId = uuidv4();
+    this.listeners[newId] = listener;
+    return newId;
+  }
+
+  removeListener(listenerId){
+    delete this.listeners[listenerId];
   }
 
   emitUpdate = () => {
-    this.listeners.forEach(listener => listener());
+    Object.values(this.listeners).forEach(listener => listener());
   }
 }
 
