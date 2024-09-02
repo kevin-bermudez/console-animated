@@ -16,6 +16,7 @@ class EnterableObject extends GenericObject{
 
   status = EnterableObject.statusesList.CLOSED;
   updateListenerId = null;
+  keyListenersId = null;
 
   constructor(config = {},{openGraphic,closeGraphic,x,y,asociateScene}){
     super(config,x,y);
@@ -31,13 +32,16 @@ class EnterableObject extends GenericObject{
 
     // this.manageEnterToObject = this.manageEnterToObject.bind(this);
     const keyListeners = KeyListeners.getInstance();
-    keyListeners.registerListener(this.manageEnterToObject);
+    this.keyListenersId = keyListeners.registerListener(this.manageEnterToObject);
 
   }
 
   onRemove(){
     const updateListeners = UpdateListeners.getInstance();
     updateListeners.removeListener(this.updateListenerId);
+
+    const keyListeners = KeyListeners.getInstance();
+    keyListeners.removeListener(this.keyListenersId);
   }
 
   manageEnterToObject = (key) => {
