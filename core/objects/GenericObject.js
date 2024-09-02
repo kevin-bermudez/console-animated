@@ -16,6 +16,7 @@ class GenericObject{
   scenesManagerInstance = null;
 
   onUpdate = () => {}
+  onRemove = () => {}
 
   constructor(config = {},x,y){
     this.id = uuidv4();

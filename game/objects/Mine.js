@@ -11,7 +11,7 @@ class Mine extends EnterableObject{
       ],
       openGraphic: [
         'x-----------x',
-        '|1 = entrar |',
+        '|'+EnterableObject.enterKey+' = entrar |',
         'x-----------x'
       ],
       x,

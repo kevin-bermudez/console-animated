@@ -5,7 +5,7 @@ const { KeyListeners } = require('../listeners/KeyListeners');
 const { ScenesManager } = require('../scenes/ScenesManager');
 
 class EnterableObject extends GenericObject{
-  enterKey = '1';
+  static enterKey = '1';
   asociateScene = null;
   static statusesList = Object.freeze({
     CLOSED : 'closed',
@@ -45,7 +45,7 @@ class EnterableObject extends GenericObject{
   }
 
   manageEnterToObject = (key) => {
-    if(key.name === this.enterKey && this.status === EnterableObject.statusesList.OPENED){
+    if(key.name === EnterableObject.enterKey && this.status === EnterableObject.statusesList.OPENED){
       // console.log('holis trinis',this)
       const sceneManager = ScenesManager.getInstance();
       sceneManager.changeScene(this.asociateScene,true);

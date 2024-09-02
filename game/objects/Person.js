@@ -4,15 +4,29 @@ const { ScreenManager } = require("../../core/screen/ScreenManager");
 
 class Person extends GenericObject{  
   keyListenersId = null;
+  pickableObjects = [];
+  instance = null;
 
-  constructor(config = {},x,y){
+  constructor(config,x,y){
     super(config,x,y);
 
     const keyListeners = KeyListeners.getInstance();
     this.keyListenersId = keyListeners.registerListener(this.manageMovementKeys);
-
+    
     this.setGraphic('o');
     this.draw();
+  }
+
+  static getInstance(config = {},x,y){
+    if(!this.instance){
+      Person.instance = new Person(config,x,y);
+    }
+
+    return this.instance;
+  }
+
+  setPickableObject(pickableObject){
+    this.pickableObjects.push(pickableObject);
   }
 
   onRemove(){

@@ -11,12 +11,12 @@ class Exit extends EnterableObject{
       ],
       openGraphic: [
         'x-------x',
-        '|1=Salir|',
+        '|'+EnterableObject.enterKey+'=Salir|',
         'x-------x'
       ],
       x,
       y,
-      asociateScene: ScenesManager.getInstance().prevScene
+      asociateScene: ScenesManager.getInstance().prevSceneClass
     });
     
   }

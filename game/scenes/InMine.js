@@ -1,5 +1,6 @@
 const { GenericScene } = require("../../core/scenes/GenericScene");
 const { Exit } = require("../objects/Exit");
+const { GoldOre } = require("../objects/GoldOre");
 const { Person } = require("../objects/Person");
 
 class InMine extends GenericScene{
@@ -10,7 +11,9 @@ class InMine extends GenericScene{
 
   init(){
     const exit = new Exit({},1,1);
-    new Person({},exit.size.x + 1,1)
+    Person.getInstance({},exit.size.x + 2,1);
+
+    new GoldOre({},exit.size.x + 3,1);
   }
 }
 
