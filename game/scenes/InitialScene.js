@@ -1,5 +1,4 @@
 const { GenericScene } = require("../../core/scenes/GenericScene");
-const { ScreenManager } = require("../../core/screen/ScreenManager");
 const { CentralBank } = require("../objects/CentralBank");
 const { Mine } = require("../objects/Mine");
 const { Person } = require("../objects/Person");

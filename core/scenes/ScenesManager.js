@@ -1,8 +1,7 @@
-const { debugJson } = require("../../debugjson");
-const { ScreenManager } = require("../screen/ScreenManager");
-
 class ScenesManager{
   currentScene = null;
+  currentSceneClass = null;
+  prevScene = null;
 
   static instance = null;
   static getInstance(){
@@ -15,6 +14,8 @@ class ScenesManager{
 
   changeScene(newScene){
     // console.log('change',this.changeScene,newScene);
+    this.prevScene = this.currentSceneClass;
+    this.currentSceneClass = newScene;
     this.currentScene = new newScene();
     // console.log('current scene',this.currentScene)
     this.currentScene.init();
