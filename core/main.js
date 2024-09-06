@@ -1,7 +1,6 @@
 const { debugJson } = require('../debugjson');
 const { KeyListeners } = require('./listeners/KeyListeners');
 const { UpdateListeners } = require('./listeners/UpdateListeners');
-const { createBorder } = require('./screen/create-border');
 const { ScreenManager } = require('./screen/ScreenManager');
 const cursor = require('../ansi/ansi')(process.stdout)
 
@@ -58,7 +57,6 @@ const main = (configGameP = {
   // KeyListeners.getInstance();
   
   // const screenManager = ScreenManager.getInstance();
-  // screenManager.screen = [...createBorder()];
   // screenManager.resetScreen();
   // var lines = process.stdout.getWindowSize()[1];
   // for(var i = 0; i < lines; i++) {

@@ -52,11 +52,11 @@ class PickableObject extends GenericObject{
     ){
       // console.log('rompimos')
       // console.log('se puede recoger');
+      this.pickerObject.setPickableObject(this);
       ScreenManager.getInstance().removeObject(this);
       // console.log(this.onRemove)
       this.onRemove();
 
-      // this.pickerObject.setPickableObject(this);
       // if(this.transformBeforeTake){
       //   this.transformBeforeTake();
       // }
@@ -86,7 +86,7 @@ class PickableObject extends GenericObject{
   onUpdate = () => {
     const screenManager = ScreenManager.getInstance();
     const areObjectsNear = screenManager.objectsNear(this);
-    
+    // console.log('on upd',areObjectsNear.length)
     if(areObjectsNear.length){
       this.status = PickableObject.statusesList.NEARBY;
       this.graphicByStatus();

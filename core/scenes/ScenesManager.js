@@ -16,6 +16,11 @@ class ScenesManager{
   changeScene(newScene){
     // console.log('change',this.changeScene,newScene);
     this.prevSceneClass = this.currentSceneClass;
+    
+    if(this.currentScene && this.currentScene.onRemove){
+      this.currentScene.onRemove();
+    }
+
     this.currentSceneClass = newScene;
     this.currentScene = new newScene();
     // console.log('current scene',this.currentScene)

@@ -1,30 +1,36 @@
 const { v4:uuidv4 } = require('uuid');
 const { ScreenManager } = require('../screen/ScreenManager');
-const { ScenesManager } = require('../scenes/ScenesManager');
 
 class GenericObject{
+  config = {}
+  data = {};
+  id = null;
+  
   lines = [];
   size = { x:0,y:0 }
   positionInScreen = {x:0,y:0}
   originalPosition = {x:0,y:0}
   inScreen = false;
-  config = {
-    name : ''
-  }
-  id = null;
   screenManagerInstance = null;
   scenesManagerInstance = null;
 
   onUpdate = () => {}
   onRemove = () => {}
 
-  constructor(config = {},x,y){
-    this.id = uuidv4();
+  reconfigure(config = {},x,y){
     this.config = config;
     // this.screenManagerInstance = ScreenManager.getInstance();
     this.originalPosition.x = x;
     this.originalPosition.y = y;
     // console.log('constructor generic object');
+    this.setGraphic('o');
+    this.erase();
+    this.draw();
+  }
+
+  constructor(config = {},x,y){
+    this.id = uuidv4();
+    this.reconfigure(config,x,y);
   }
 
   draw(){

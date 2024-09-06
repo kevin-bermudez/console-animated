@@ -4,7 +4,6 @@ const { ScreenManager } = require("../../core/screen/ScreenManager");
 
 class Person extends GenericObject{  
   keyListenersId = null;
-  pickableObjects = [];
   instance = null;
 
   constructor(config,x,y){
@@ -12,26 +11,34 @@ class Person extends GenericObject{
 
     const keyListeners = KeyListeners.getInstance();
     this.keyListenersId = keyListeners.registerListener(this.manageMovementKeys);
-    
-    this.setGraphic('o');
-    this.draw();
+    this.data.pickableObjects = [];
   }
 
-  static getInstance(config = {},x,y){
+  static getInstance(config = {},x,y,notReconfigure = false){
+    // console.log('holi instance',config,x,y,notReconfigure);
+    // console.log('data person',config,x,y,notReconfigure);
     if(!this.instance){
       Person.instance = new Person(config,x,y);
+      Person.instance.reconfigure(config,x,y);
+    } 
+
+    if(!notReconfigure){
+      // ScreenManager.getInstance().writeInAside(`${x} ${y}`,7)
+      Person.instance.reconfigure(config,x,y);
     }
 
-    return this.instance;
+    return Person.instance;
   }
 
   setPickableObject(pickableObject){
-    this.pickableObjects.push(pickableObject);
+    this.data.pickableObjects.push(pickableObject);
   }
 
   onRemove(){
     const keyListeners = KeyListeners.getInstance();
-    keyListeners.removeListener(this.keyListenersId);
+    keyListeners.remcoveListener(this.keyListenersId);
+
+    
   }
 
   manageMovementKeys = (key) => {

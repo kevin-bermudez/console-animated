@@ -1,9 +1,7 @@
 const { debugJson } = require("../../debugjson");
-const { getScreenSize } = require("../../utils/screen");
-const { createBorder } = require("./create-border");
 
 class ScreenManager{
-  screen = [...createBorder()];
+  screen = [];
   objectsInScreen = [];
   movementDirections = {
     UP : 'UP',
@@ -17,6 +15,7 @@ class ScreenManager{
   static getInstance(){
     if(!ScreenManager.instance){
       ScreenManager.instance = new ScreenManager();
+      ScreenManager.instance.screen = [...ScreenManager.instance.createBorder()]
     }
 
     return ScreenManager.instance;
@@ -44,7 +43,7 @@ class ScreenManager{
   }
 
   getRealCoordinates(coordinates){
-    const screenSize = getScreenSize();
+    const screenSize = this.getScreenSize();
 
     return {
       x : screenSize.forRealX(coordinates.x),
@@ -63,6 +62,7 @@ class ScreenManager{
 
   objectsNear(referenceObject){
     const referenceObjectBorders = this.getBorderObject(referenceObject);
+    // console.log('objects',this.objectsInScreen);
     return this.objectsInScreen.filter(obIS => {
       return ![
         obIS.positionInScreen.x >= referenceObjectBorders.x1,
@@ -107,7 +107,7 @@ class ScreenManager{
   }
 
   resetScreen(){
-    this.screen = [...createBorder()];
+    this.screen = [...this.createBorder()];
     this.objectsInScreen.forEach(object => object.onRemove ? object.onRemove() : null);
     this.objectsInScreen = [];
   }
@@ -248,44 +248,103 @@ class ScreenManager{
   getScreen(){
     return this.screen;
   }
+
+  createBorder = () => {
+    const screenSize = this.getScreenSize();
+    // console.log('screen size',screenSize)
+    const borderGraphics = [];
+    
+    borderGraphics.push(['']);
+    borderGraphics.push([
+      '',
+      ...'-'.repeat(screenSize.width).split('')
+    ])
+  
+    for(let i=1; i<=screenSize.height; i++){
+      borderGraphics.push([
+        '|',
+        ...' '.repeat(screenSize.main).split(''),
+        '|',
+        ...' '.repeat((screenSize.width - screenSize.main) - 1).split(''),
+        '|']
+      )
+    }
+  
+    // console.log(screenSize)
+    
+    borderGraphics.push([
+      '',
+      ...'-'.repeat(screenSize.width).split('')
+    ])
+  
+    return borderGraphics
+  }
+
+  getScreenSize = (config = { 
+    widthBorder:2,
+    heightBorder:3,
+    forRealY : (y) => y+2 ,
+    forRealX : (x) => x+1,
+    mainPercentage : 70
+  }) => {
+      const consoleColumns = process.stdout.columns;
+      const consoleRows = process.stdout.rows;
+      const width = consoleColumns - config.widthBorder;
+      const height = consoleRows - config.heightBorder;
+      const main = Math.floor( ( width * config.mainPercentage ) / 100 );
+      const aside = width -  main;
+
+      return {
+          columns : consoleColumns,
+          rows : consoleRows,
+          width,
+          height,
+          forRealY : config.forRealY,
+          forRealX : config.forRealX,
+          main,
+          aside
+      }
+  }
+
+  resetAside(){
+    const screenSize = this.getScreenSize();
+
+    const distanceAside = screenSize.width - screenSize.main - 1;
+    for(let y=screenSize.forRealY(1);y <= screenSize.height;y++){
+      this.screen[y-1].splice(screenSize.main + 2,distanceAside,...' '.repeat(distanceAside).split(''));
+    }
+  }
+
+  writeInAside(message,y){
+    const screenSize = this.getScreenSize();
+    let x = screenSize.forRealX(screenSize.main + 3) - 1;
+    const realY = screenSize.forRealY(y) - 1;
+
+    message.split('').slice(0,screenSize.aside - 3).forEach(char => {
+      this.screen[realY][x] = char;
+      x++;
+    })
+    // this.screen[screenSize.forRealY(y) - 1][screenSize.forRealX(screenSize.main + 2) - 1] = '1'
+    //message.split('').slice(0,screenSize.aside));
+  }
   
   printScreen(){
-    // process.stdout.clearLine(1);// <<--here
-    // process.stdout.cursorTo(0,);
-    // console.log('print',this.objectsInScreen.length)
-    const screenSize = getScreenSize();
+    const screenSize = this.getScreenSize();
     const tmpScreen = this.getScreen();
-    let counter = 0;
-    // console.log('after screen',JSON.stringify(tmpScreen[3]))
+
     for(let y=1;y <= screenSize.rows;y++){
       let line = '';
       let test = false;
       for(let x=1;x<=screenSize.columns;x++){
         line += tmpScreen[y-1] && tmpScreen[y-1][x-1] ? tmpScreen[y-1][x-1] : ' ';
-        // if(tmpScreen[y-1] && tmpScreen[y-1][x-1] && tmpScreen[y-1][x-1].toLowerCase().includes('a')){
-        //   test = true;
-        // }
       }
-
-      // if(test){
-      //   console.log('Línea',y-1,line)
-      // }
-      // if(line.includes('B.Central')){
-      //   counter++;
-      // }
-
-      // if(y === 11){
-      //   line = 'Data: ' + screenSize.rows + ' ' + this.screen.length + ' ' + counter;
-      // }
       
       process.stdout.cursorTo(0,y-1);
       process.stdout.write(line);
       
     }
     
-    // console.log('cuantos bancos centrales tengo',this.idtest);
     this.screen = tmpScreen;
-    // debugJson(tmpScreen,'prints'+Date.now())
   }
 }
 

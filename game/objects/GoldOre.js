@@ -1,10 +1,13 @@
 const { PickableObject } = require('../../core/objects/PickableObject');
+const { generateRandomInt } = require('../../utils/random-data');
+const { Person } = require('./Person');
 
 class GoldOre extends PickableObject{
   completedPercentage = 100;
+  weight = generateRandomInt(1,1000);
 
   constructor(config = {},x,y){
-    super(config,{
+    super({...config,name:'Mena oro'},{
       x,
       y,
       awayGraphic : [
@@ -19,6 +22,7 @@ class GoldOre extends PickableObject{
         'x---x',
         'Picar'
       ],
+      pickerObject : Person.getInstance({},0,0,true)
     });
 
     this.setGraphic(' ---');

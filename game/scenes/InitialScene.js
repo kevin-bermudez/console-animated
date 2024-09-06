@@ -13,6 +13,8 @@ class InitialScene extends GenericScene{
     const mine = new Mine({},1,1);
     new CentralBank({},1,mine.size.y+3);
     Person.getInstance({},mine.size.x+1,1);
+
+    super.init();
   }
   
 }

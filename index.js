@@ -9,7 +9,7 @@ main();
 // const initialScene = new InitialScene();
 // initialScene.init();
 
-ScenesManager.getInstance().changeScene(InMine);
+ScenesManager.getInstance().changeScene(InitialScene);
 
 /*
  ---
