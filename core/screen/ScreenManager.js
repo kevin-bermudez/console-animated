@@ -340,7 +340,6 @@ class ScreenManager{
     // console.log('screen',tmpScreen)
     for(let y=1;y <= screenSize.rows;y++){
       let line = '';
-      let test = false;
       for(let x=1;x<=screenSize.columns;x++){
         line += tmpScreen[y-1] && tmpScreen[y-1][x-1] ? tmpScreen[y-1][x-1] : ' ';
       }

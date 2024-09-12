@@ -1,11 +1,11 @@
 const { PickableObject } = require('../../core/objects/PickableObject');
 const { generateRandomInt } = require('../../utils/random-data');
-const { Person } = require('./Person');
+const { objectTypes } = require('./object-contants');
 
 class GoldOre extends PickableObject{
   constructor(x,y,pickerObject){
     super({
-      type:'GoldOre',name:'Mena oro'
+      type:objectTypes.GOLD_ORE,name:'Mena oro'
       },
       {
         weight: generateRandomInt(1,1000),

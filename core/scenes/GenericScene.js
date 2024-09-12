@@ -1,3 +1,4 @@
+const { objectTypes } = require("../../game/objects/object-contants");
 const { Person } = require("../../game/objects/Person");
 const { UpdateListeners } = require("../listeners/UpdateListeners");
 const { ScreenManager } = require("../screen/ScreenManager");
@@ -29,7 +30,8 @@ class GenericScene{
   }
 
   writeAside(){
-    // const personObjects = Person.getInstance({},0,0,true).pickableObjects;
+    const personObjects = ScreenManager.getInstance().objectsInScreen.find(object => object.config.type === objectTypes.PERSON)?.data.pickableObjects;
+    // console.log('po',personObjects)
     let currentLine = 1;
     const screenManager = ScreenManager.getInstance();
     screenManager.resetAside();
@@ -38,11 +40,11 @@ class GenericScene{
     currentLine++;
 
     
-    // if(personObjects.length){
-    //   const additionalInfo0 = personObjects[0].weight ? '(' + personObjects[0].weight + 'gr)' : '';
-    //   screenManager.writeInAside('- ' + personObjects[0].config.name + additionalInfo0,currentLine);
-    //   currentLine++;
-    // }
+    if(personObjects && personObjects.length){
+      const additionalInfo0 = personObjects[0].data.weight ? '(' + personObjects[0].data.weight + 'gr)' : '';
+      screenManager.writeInAside('- ' + personObjects[0].config.name + additionalInfo0,currentLine);
+      currentLine++;
+    }
 
     currentLine++;
 

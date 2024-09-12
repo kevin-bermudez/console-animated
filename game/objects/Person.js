@@ -2,7 +2,8 @@ const { GenericObject } = require('../../core/objects/GenericObject');
 const { KeyListeners } = require("../../core/listeners/KeyListeners");
 const { ScreenManager } = require("../../core/screen/ScreenManager");
 const { getObjectsByType } = require('../../core/storage/generic-object-storage');
-const type = 'Person';
+const { objectTypes } = require('./object-contants');
+const type = objectTypes.PERSON;
 
 class Person extends GenericObject{  
   keyListenersId = null;
