@@ -74,6 +74,11 @@ class GenericObject{
     }
   }
 
+  setData = (newData) => {
+    this.data = {...this.data,...newData};
+    this.saveObject();
+  }
+
   saveObject = () => {
     const dataToSave = this.generateStructureToSave(this);
     saveObject(

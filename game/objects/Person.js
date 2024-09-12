@@ -36,8 +36,7 @@ class Person extends GenericObject{
     this.draw();
 
     if(!preSavedPerson.length){
-      this.data.pickableObjects = [];
-      this.saveObject();
+      this.setData({ pickableObjects:[] })
     }
 
     // console.log('set listener');
@@ -62,8 +61,9 @@ class Person extends GenericObject{
   // }
 
   setPickableObject(pickableObject){
-    this.data.pickableObjects.push(this.generateStructureToSave( pickableObject ));
-    this.saveObject();
+    const tmpPickableObjects = [...this.data.pickableObjects];
+    tmpPickableObjects.push( this.generateStructureToSave( pickableObject ) );
+    this.setData( {pickableObjects:tmpPickableObjects} )
   }
 
   onRemove(){
