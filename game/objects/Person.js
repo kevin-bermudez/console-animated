@@ -30,6 +30,7 @@ class Person extends GenericObject{
       idTmp
     );
     
+    // console.log('draw person')
     this.setGraphic('o');
     this.draw();
 
@@ -38,6 +39,7 @@ class Person extends GenericObject{
       this.saveObject();
     }
 
+    // console.log('set listener');
     const keyListeners = KeyListeners.getInstance();
     this.keyListenersId = keyListeners.registerListener(this.manageMovementKeys);
   }
@@ -64,13 +66,13 @@ class Person extends GenericObject{
   }
 
   onRemove(){
+    // console.log('remove object trinis');
     const keyListeners = KeyListeners.getInstance();
-    keyListeners.remcoveListener(this.keyListenersId);
-
-    
+    keyListeners.removeListener(this.keyListenersId);    
   }
 
   manageMovementKeys = (key) => {
+    // console.log('holis aquí',this.positionInScreen);
     const screenManager = ScreenManager.getInstance();
 
     if(screenManager.isDirKey(key.name)){

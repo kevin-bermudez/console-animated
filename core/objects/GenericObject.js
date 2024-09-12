@@ -16,7 +16,7 @@ class GenericObject{
   scenesManagerInstance = null;
 
   onUpdate = () => {}
-  onRemove = () => {}
+  // onRemove = () => {}
 
   // reconfigure(config = {},x,y,data = {}){
   //   this.config = config;
@@ -41,7 +41,7 @@ class GenericObject{
   }
 
   draw(){
-    // console.log('draw in GenericObject')
+    // console.log('draw in GenericObject',this.config.type)
     ScreenManager.getInstance().drawObject(this);
     this.inScreen = true;
     // console.log('una llamada a draw');

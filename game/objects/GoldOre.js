@@ -3,7 +3,7 @@ const { generateRandomInt } = require('../../utils/random-data');
 const { Person } = require('./Person');
 
 class GoldOre extends PickableObject{
-  constructor(x,y){
+  constructor(x,y,pickerObject){
     super({
       type:'GoldOre',name:'Mena oro'
       },
@@ -27,7 +27,7 @@ class GoldOre extends PickableObject{
         'x---x',
         'Picar'
       ],
-      pickerObject : new Person(1,1),
+      pickerObject
     }
   );
 

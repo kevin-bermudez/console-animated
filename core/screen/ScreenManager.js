@@ -107,8 +107,14 @@ class ScreenManager{
   }
 
   resetScreen(){
+    // console.log('reset screen',this.objectsInScreen);
     this.screen = [...this.createBorder()];
-    this.objectsInScreen.forEach(object => object.onRemove ? object.onRemove() : null);
+    this.objectsInScreen.forEach(object => {
+      if(object.onRemove){
+        // console.log('remove in foreach',object.config.type)
+        object.onRemove();
+      }
+    });
     this.objectsInScreen = [];
   }
 
@@ -331,7 +337,7 @@ class ScreenManager{
   printScreen(){
     const screenSize = this.getScreenSize();
     const tmpScreen = this.getScreen();
-
+    // console.log('screen',tmpScreen)
     for(let y=1;y <= screenSize.rows;y++){
       let line = '';
       let test = false;
@@ -339,8 +345,8 @@ class ScreenManager{
         line += tmpScreen[y-1] && tmpScreen[y-1][x-1] ? tmpScreen[y-1][x-1] : ' ';
       }
       
-      // process.stdout.cursorTo(0,y-1);
-      // process.stdout.write(line);
+      process.stdout.cursorTo(0,y-1);
+      process.stdout.write(line);
       
     }
     

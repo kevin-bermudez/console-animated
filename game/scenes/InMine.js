@@ -17,9 +17,9 @@ class InMine extends GenericScene{
 
   init(){
     const exit = new Exit({},1,1);
-    new Person(exit.size.x + 2,1);
+    const person = new Person(exit.size.x + 2,1);
 
-    new GoldOre(exit.size.x + 3,1);
+    new GoldOre(exit.size.x + 3,1,person);
 
     // this.initiated = true;
     // super.init();
