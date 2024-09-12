@@ -1,4 +1,5 @@
 const { EnterableObject } = require('../../core/objects/EnterableObject');
+const { InCentralBank } = require('../scenes/InCentralBank');
 
 class CentralBank extends EnterableObject{
   constructor(config = {},x,y){
@@ -10,11 +11,12 @@ class CentralBank extends EnterableObject{
       ],
       openGraphic: [
         'x---------x',
-        '|1 =entrar|',
+        '|'+EnterableObject.enterKey+' =entrar|',
         'x---------x'
       ],
       x,
-      y
+      y,
+      asociateScene: InCentralBank
     });
   }
 }

@@ -11,8 +11,8 @@ class InitialScene extends GenericScene{
 
   init(){
     const mine = new Mine({},1,1);
-    new CentralBank({},1,mine.size.y+3);
-    new Person(mine.size.x+1,1);
+    const centralBank = new CentralBank({},1,mine.size.y+3);
+    new Person(centralBank.positionInScreen.x+centralBank.size.x,centralBank.positionInScreen.y);
     // Person.getInstance({},mine.size.x+1,1);
 
     super.init();
