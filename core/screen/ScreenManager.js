@@ -339,8 +339,8 @@ class ScreenManager{
         line += tmpScreen[y-1] && tmpScreen[y-1][x-1] ? tmpScreen[y-1][x-1] : ' ';
       }
       
-      process.stdout.cursorTo(0,y-1);
-      process.stdout.write(line);
+      // process.stdout.cursorTo(0,y-1);
+      // process.stdout.write(line);
       
     }
     

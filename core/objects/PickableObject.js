@@ -18,8 +18,8 @@ class PickableObject extends GenericObject{
   keyListenersId = null;
   preListeners = [];
 
-  constructor(config = {},{awayGraphic,nearbyGraphic,x,y,pickerObject,canTake = false}){
-    super(config,x,y);
+  constructor(config = {},data = {},{awayGraphic,nearbyGraphic,x,y,pickerObject,canTake = false}){
+    super(config,x,y,data);
     this.graphicsByStatus[PickableObject.statusesList.AWAY] = awayGraphic;
     this.graphicsByStatus[PickableObject.statusesList.NEARBY] = nearbyGraphic;
     this.canTake = canTake;
@@ -40,7 +40,6 @@ class PickableObject extends GenericObject{
   }
 
   manageToPickToObject = (key) => {
-    // console.log('manage pick')
     if(this.preListeners.length){
       this.preListeners.forEach(listener => listener(key));
     }
@@ -50,8 +49,6 @@ class PickableObject extends GenericObject{
       this.status === PickableObject.statusesList.NEARBY &&
       this.canTake
     ){
-      // console.log('rompimos')
-      // console.log('se puede recoger');
       this.pickerObject.setPickableObject(this);
       ScreenManager.getInstance().removeObject(this);
       // console.log(this.onRemove)
@@ -71,6 +68,7 @@ class PickableObject extends GenericObject{
     }
     
     this.resetGraphics();
+    
     this.graphicsByStatus[this.status].forEach(line => this.setGraphic(line));
     this.draw();
   }

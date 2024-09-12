@@ -29,7 +29,7 @@ class GenericScene{
   }
 
   writeAside(){
-    const personObjects = Person.getInstance({},0,0,true).pickableObjects;
+    // const personObjects = Person.getInstance({},0,0,true).pickableObjects;
     let currentLine = 1;
     const screenManager = ScreenManager.getInstance();
     screenManager.resetAside();
@@ -38,11 +38,11 @@ class GenericScene{
     currentLine++;
 
     
-    if(personObjects.length){
-      const additionalInfo0 = personObjects[0].weight ? '(' + personObjects[0].weight + 'gr)' : '';
-      screenManager.writeInAside('- ' + personObjects[0].config.name + additionalInfo0,currentLine);
-      currentLine++;
-    }
+    // if(personObjects.length){
+    //   const additionalInfo0 = personObjects[0].weight ? '(' + personObjects[0].weight + 'gr)' : '';
+    //   screenManager.writeInAside('- ' + personObjects[0].config.name + additionalInfo0,currentLine);
+    //   currentLine++;
+    // }
 
     currentLine++;
 

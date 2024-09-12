@@ -3,11 +3,16 @@ const { generateRandomInt } = require('../../utils/random-data');
 const { Person } = require('./Person');
 
 class GoldOre extends PickableObject{
-  completedPercentage = 100;
-  weight = generateRandomInt(1,1000);
-
-  constructor(config = {},x,y){
-    super({...config,name:'Mena oro'},{
+  constructor(x,y){
+    super({
+      type:'GoldOre',name:'Mena oro'
+      },
+      {
+        weight: generateRandomInt(1,1000),
+        completed_percentage : 100
+      }  
+      ,
+      {
       x,
       y,
       awayGraphic : [
@@ -22,8 +27,9 @@ class GoldOre extends PickableObject{
         'x---x',
         'Picar'
       ],
-      pickerObject : Person.getInstance({},0,0,true)
-    });
+      pickerObject : new Person(1,1),
+    }
+  );
 
     this.setGraphic(' ---');
     this.setGraphic('| o |');
@@ -41,9 +47,9 @@ class GoldOre extends PickableObject{
       this.status === PickableObject.statusesList.NEARBY
     ){
       // console.log('picaso')
-      this.completedPercentage -= 20;
-      this.canTake = this.completedPercentage <= 0 ? true : false;
-      // console.log('info after picaso',this.completedPercentage,this.canTake)
+      this.data.completed_percentage -= 20;
+      this.canTake = this.data.completed_percentage <= 0 ? true : false;
+      // console.log('info after picaso',this.data.completed_percentage,this.canTake)
     }
   }
 }
