@@ -114,6 +114,7 @@ class InBankCashRegister extends GenericScene{
   }
 
   writeMenu(){
+    this.context = this.contextList.MAIN_MENU;
     ScreenManager.getInstance().resetScreen();
     const screenSize = ScreenManager.getInstance().getScreenSize();
 
@@ -201,7 +202,7 @@ class InBankCashRegister extends GenericScene{
 
     if(key.name === 'e' && this.context === this.contextList.MAIN_MENU){
       const scenesManager = ScenesManager.getInstance();
-      scenesManager.changeScene(ScenesManager.prevSceneTag,true)
+      scenesManager.changeScene(ScenesManager.prevSceneTag);
       return;
     }
 

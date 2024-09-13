@@ -44,7 +44,7 @@ const requestAnimationFrame = (f) => {
 }
 
 const main = (configGameP = {
-  fps : 60,
+  fps : 1,
   currentFrame : 1
 }) => {
   configGame = {
