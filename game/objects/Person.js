@@ -13,7 +13,7 @@ class Person extends GenericObject{
     let configTmp = {
       type:type
     }
-    let dataTmp = {};
+    let dataTmp = {cash:0};
     let idTmp = null;
 
     const preSavedPerson = getObjectsByType(type);
