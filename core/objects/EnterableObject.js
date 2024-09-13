@@ -7,6 +7,7 @@ const { ScenesManager } = require('../scenes/ScenesManager');
 class EnterableObject extends GenericObject{
   static enterKey = '1';
   asociateScene = null;
+  noModifyHistory = false;
   static statusesList = Object.freeze({
     CLOSED : 'closed',
     OPENED : 'opened'
@@ -18,10 +19,11 @@ class EnterableObject extends GenericObject{
   updateListenerId = null;
   keyListenersId = null;
 
-  constructor(config = {},{openGraphic,closeGraphic,x,y,asociateScene}){
-    super(config,x,y);
+  constructor(config = {},{openGraphic,closeGraphic,x,y,asociateScene},data = {},id = null,noModifyHistory = false){
+    super(config,x,y,data,id);
     this.graphicsByStatus[EnterableObject.statusesList.CLOSED] = closeGraphic;
     this.graphicsByStatus[EnterableObject.statusesList.OPENED] = openGraphic;
+    this.noModifyHistory = noModifyHistory;
 
     this.asociateScene = asociateScene;
 
@@ -48,7 +50,7 @@ class EnterableObject extends GenericObject{
     if(key.name === EnterableObject.enterKey && this.status === EnterableObject.statusesList.OPENED){
       // console.log('holis trinis',this)
       const sceneManager = ScenesManager.getInstance();
-      sceneManager.changeScene(this.asociateScene,true);
+      sceneManager.changeScene(this.asociateScene,this.noModifyHistory);
     }
   }
 

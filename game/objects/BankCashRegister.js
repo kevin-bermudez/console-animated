@@ -1,5 +1,5 @@
 const { EnterableObject } = require('../../core/objects/EnterableObject');
-const { ScenesManager } = require('../../core/scenes/ScenesManager');
+const { InBankCashRegister } = require('../scenes/InBankCashRegister');
 const { objectTypes } = require('./object-contants');
 
 class BankCashRegister extends EnterableObject{
@@ -17,7 +17,7 @@ class BankCashRegister extends EnterableObject{
       ],
       x,
       y,
-      asociateScene: ScenesManager.getInstance().prevSceneClass
+      asociateScene: InBankCashRegister,
     });
     
   }

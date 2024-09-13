@@ -330,8 +330,6 @@ class ScreenManager{
       this.screen[realY][x] = char;
       x++;
     })
-    // this.screen[screenSize.forRealY(y) - 1][screenSize.forRealX(screenSize.main + 2) - 1] = '1'
-    //message.split('').slice(0,screenSize.aside));
   }
   
   printScreen(){

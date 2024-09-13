@@ -1,7 +1,7 @@
 const { objectTypes } = require("../../game/objects/object-contants");
-const { Person } = require("../../game/objects/Person");
 const { UpdateListeners } = require("../listeners/UpdateListeners");
 const { ScreenManager } = require("../screen/ScreenManager");
+const { getObjectsByType } = require("../storage/generic-object-storage");
 
 class GenericScene{
   updateListenerId = null;
@@ -30,29 +30,35 @@ class GenericScene{
   }
 
   writeAside(){
-    const personObjects = ScreenManager.getInstance().objectsInScreen.find(object => object.config.type === objectTypes.PERSON)?.data.pickableObjects;
-    // console.log('po',personObjects)
+    let personObject = getObjectsByType(objectTypes.PERSON);
+    let personObjects = [];
     let currentLine = 1;
     const screenManager = ScreenManager.getInstance();
     screenManager.resetAside();
-
-    screenManager.writeInAside('1. Objetos',currentLine);
-    currentLine++;
-
     
-    if(personObjects && personObjects.length){
-      const additionalInfo0 = personObjects[0].data.weight ? '(' + personObjects[0].data.weight + 'gr)' : '';
-      screenManager.writeInAside('- ' + personObjects[0].config.name + additionalInfo0,currentLine);
+    if(personObject.length && personObject[0].data.pickableObjects && personObject[0].data.pickableObjects.length){
+      screenManager.writeInAside('1. Objetos',currentLine);
+      currentLine++;
+
+      const additionalInfo0 = personObject[0].data.pickableObjects[0].data.units ? '(' + personObject[0].data.pickableObjects[0].data.units + 'gr)' : '';
+      screenManager.writeInAside('- ' + personObject[0].data.pickableObjects[0].config.type + ' ' + additionalInfo0,currentLine);
+      currentLine++;
       currentLine++;
     }
 
-    currentLine++;
+    if(personObject.length){
+      screenManager.writeInAside('Efectivo: $' + personObject[0].data.cash,currentLine);
+      currentLine++;
+      currentLine++;
+    }
 
     screenManager.writeInAside('Desplazarse:     ^      |',currentLine);
     currentLine++;
 
     screenManager.writeInAside('             <-  |  ->  v',currentLine);
     currentLine++;
+
+    return currentLine;
   }
 }
 

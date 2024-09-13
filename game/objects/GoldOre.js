@@ -5,10 +5,11 @@ const { objectTypes } = require('./object-contants');
 class GoldOre extends PickableObject{
   constructor(x,y,pickerObject){
     super({
-      type:objectTypes.GOLD_ORE,name:'Mena oro'
+      type:objectTypes.GOLD_ORE,name:'Mena oro',
+      can_sell: true
       },
       {
-        weight: generateRandomInt(1,1000),
+        units: generateRandomInt(1,1000),
         completed_percentage : 100
       }  
       ,

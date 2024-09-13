@@ -1,6 +1,8 @@
 class ScenesManager{
+  static prevSceneTag = 'ps';
   currentScene = null;
   currentSceneClass = null;
+  history = [];
   
   prevSceneClass = null;
 
@@ -13,16 +15,25 @@ class ScenesManager{
     return ScenesManager.instance;
   }
 
-  changeScene(newScene){
+  changeScene(newScene,noModifyHistory = false){
     // console.log('change',this.changeScene,newScene);
     this.prevSceneClass = this.currentSceneClass;
+
+    if(newScene === ScenesManager.prevSceneTag){
+      this.history.pop();
+    }
+
+    if(newScene !== ScenesManager.prevSceneTag){
+      this.history.push(newScene)
+    }
     
     if(this.currentScene && this.currentScene.onRemove){
       this.currentScene.onRemove();
     }
 
-    this.currentSceneClass = newScene;
-    this.currentScene = new newScene();
+    const newSceneDef = this.history[ this.history.length - 1 ];
+    this.currentSceneClass = newSceneDef;
+    this.currentScene = new newSceneDef();
     // console.log('current scene',this.currentScene)
     this.currentScene.init();
     // console.log('idtest',ScreenManager.getInstance().idtest)

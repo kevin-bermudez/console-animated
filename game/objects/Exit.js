@@ -16,7 +16,7 @@ class Exit extends EnterableObject{
       ],
       x,
       y,
-      asociateScene: ScenesManager.getInstance().prevSceneClass
+      asociateScene: ScenesManager.prevSceneTag
     });
     
   }
