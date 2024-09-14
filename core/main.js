@@ -5,6 +5,7 @@ const { ScreenManager } = require('./screen/ScreenManager');
 const cursor = require('../ansi/ansi')(process.stdout)
 
 const readline = require('readline');
+const { TimeManager } = require('./TimeManager');
 
 readline.emitKeypressEvents(process.stdin);
 
@@ -22,7 +23,7 @@ const loop = (time) => {
   }
 
   const updateListeners = UpdateListeners.getInstance();
-  updateListeners.emitUpdate();
+  updateListeners.emitUpdate(time);
 
   const screenManager = ScreenManager.getInstance();
 
@@ -44,7 +45,7 @@ const requestAnimationFrame = (f) => {
 }
 
 const main = (configGameP = {
-  fps : 1,
+  fps : 60,
   currentFrame : 1
 }) => {
   configGame = {
@@ -62,6 +63,7 @@ const main = (configGameP = {
   // for(var i = 0; i < lines; i++) {
   //     console.log('\r\n');
   // }
+  TimeManager.getInstance();
   requestAnimationFrame(loop);
 
 

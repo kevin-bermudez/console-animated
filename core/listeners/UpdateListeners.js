@@ -22,8 +22,8 @@ class UpdateListeners{
     delete this.listeners[listenerId];
   }
 
-  emitUpdate = () => {
-    Object.values(this.listeners).forEach(listener => listener());
+  emitUpdate = (time) => {
+    Object.values(this.listeners).forEach(listener => listener(time));
   }
 }
 

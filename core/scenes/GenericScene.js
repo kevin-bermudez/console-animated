@@ -2,6 +2,7 @@ const { objectTypes } = require("../../game/objects/object-contants");
 const { UpdateListeners } = require("../listeners/UpdateListeners");
 const { ScreenManager } = require("../screen/ScreenManager");
 const { getObjectsByType } = require("../storage/generic-object-storage");
+const { TimeManager } = require("../TimeManager");
 
 class GenericScene{
   updateListenerId = null;
@@ -35,6 +36,11 @@ class GenericScene{
     let currentLine = 1;
     const screenManager = ScreenManager.getInstance();
     screenManager.resetAside();
+
+    screenManager.writeInAside(`Día: ${TimeManager.getInstance().days}`,currentLine);
+    currentLine++;
+    screenManager.writeInAside(`Hora: ${TimeManager.getInstance().hours}:${TimeManager.getInstance().minutes}`,currentLine);
+    currentLine++;
     
     if(personObject.length && personObject[0].data.pickableObjects && personObject[0].data.pickableObjects.length){
       screenManager.writeInAside('1. Objetos',currentLine);
